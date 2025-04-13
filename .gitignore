@@ -4,3 +4,9 @@ __pycache__/
 venv/
 *.egg-info/
 .DS_Store
+*.h5
+*.pkl
+*.zip
+*.csv
+models/
+datasets/
