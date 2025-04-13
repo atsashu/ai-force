@@ -1,0 +1,35 @@
+# Bytecode
+__pycache__/
+*.py[cod]
+
+# Virtual env
+.venv/
+.env/
+.envrc
+*.env
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# Notebooks checkpoints
+.ipynb_checkpoints/
+
+# Data / Models / Weights
+*.h5
+*.pkl
+*.joblib
+*.pt
+*.onnx
+*.csv
+*.zip
+*.npy
+
+# Mac & system
+.DS_Store
+Thumbs.db
+env/
