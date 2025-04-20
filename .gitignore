@@ -1,14 +1,42 @@
+# Bytecode
 __pycache__/
-*.pyc
-.env
-venv/
-*.egg-info/
-.DS_Store
+*.py[cod]
+
+# Virtual env
+.venv/
+.env/
+.envrc
+*.env
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# Notebooks checkpoints
+.ipynb_checkpoints/
+
+# Data / Models / Weights
 *.h5
 *.pkl
-*.zip
+*.joblib
+*.pt
+*.onnx
 *.csv
+
 models/
 datasets/
 code/src/emailorchestration/email-gpt2/
-code/src/emailorchestration/email-gpt2/
+env/
+
+*.zip
+*.npy
+
+# Mac & system
+.DS_Store
+Thumbs.db
+
+

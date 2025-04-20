@@ -11,7 +11,7 @@ data = {
     ]  # Volume data
 }
 
-data1 = pd.read_csv('D:\AI\myai-learn\castingdata.csv', parse_dates=['ds'])
+data1 = pd.read_csv('D:/AI/myai-learn/castingdata.csv', parse_dates=['ds'])
 
 # Step 2: Set date as index
 #data1.set_index('ds', inplace=True)
@@ -27,17 +27,17 @@ model = Prophet()
 model.fit(data1)
 
 # 3. Create future dates
-future = model.make_future_dataframe(periods=12, freq='Y')
+future = model.make_future_dataframe(periods=3, freq='YE')
 
 # 4. Predict future volume
 forecast = model.predict(future)
-forecast.rename(columns={'yhat': 'predicted_capacity'}, inplace=True)
+#forecast.rename(columns={'yhat': 'predicted_capacity'}, inplace=True)
 # 5. Derive capacity from forecasted volume (e.g., capacity = volume / 100)
-forecast['capacity'] = forecast['predicted_capacity'] / 4800000  # Change this rule as needed
-
+forecast['capacity'] = forecast['yhat'] / 16800  # Change this rule as needed
+#forecast['predicted_capacity'] = forecast['predicted_capacity'].clip(lower=0)
 # 6. Plot results
 plt.figure(figsize=(10, 6))
-plt.plot(forecast['ds'], forecast['capacity'], label='Forecasted Capacity', color='purple')
+plt.plot(forecast['ds'], forecast['capacity'], label='Grid Capacity Required', color='purple')
 plt.title('Forecasted Infrastructure Capacity (based on Volume)')
 plt.xlabel('Date')
 plt.ylabel('Capacity')
@@ -47,4 +47,4 @@ plt.tight_layout()
 plt.show()
 
 # 7. Optional: Save forecast to CSV
-print(forecast[['ds', 'predicted_capacity', 'capacity']])
+print(forecast[['ds',  'capacity']])
