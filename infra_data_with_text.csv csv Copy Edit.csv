@@ -1,0 +1,5 @@
+timestamp,cpu_usage,memory_usage,event_desc
+2024-01-01,55.3,68.2,"backup started"
+2024-01-02,53.1,70.1,"normal ops"
+2024-01-03,75.0,85.2,"load spike"
+
