@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from xgboost import XGBRegressor
 import matplotlib.pyplot as plt
+#pip install pandas matplotlib xgboost scikit-learn
 
 # Load data
 df = pd.read_csv('infra_data_with_text.csv')
