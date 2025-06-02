@@ -7,6 +7,11 @@ __pycache__/
 .env/
 .envrc
 *.env
+airflow_env*/
+airflow_env/
+airflow_env_old/
+airflow_*/
+venv/
 
 # IDEs
 .vscode/

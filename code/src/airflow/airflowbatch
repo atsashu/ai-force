@@ -1,0 +1,81 @@
+#pip install apache-airflow==2.7.3 pandas numpy scikit-learn joblib
+#pip install "apache-airflow==2.7.3" --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.7.3/constraints-3.11.txt
+#airflow db init
+#airflow users create ^
+#  --username admin ^
+ #   --firstname Admin ^
+  #  --lastname User ^
+ #   --role Admin ^
+ #   --email admin@example.com ^
+ #   --password admin
+#airflow scheduler
+#airflow webserver --port 8080
+#mkdir C:\Users\91965\airflow\dags
+#Create a simple DAG in that folder (e.g., hello_world_dag.py)
+
+
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from datetime import datetime
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+import joblib
+import os
+
+# === CONFIG ===
+MODEL_PATH = '/tmp/autosys_forecast_model.pkl'
+
+# === AI LOGIC ===
+def load_data():
+    # Simulated time series data — replace with actual file/DB fetch
+    np.random.seed(42)
+    t = np.arange(100)
+    values = 50 + 10 * np.sin(t / 5.0) + np.random.normal(0, 1, 100)
+    return pd.DataFrame({'time': t, 'value': values})
+
+def train_model():
+    df = load_data()
+    df['lag1'] = df['value'].shift(1)
+    df.dropna(inplace=True)
+    X = df[['lag1']]
+    y = df['value']
+    model = LinearRegression()
+    model.fit(X, y)
+    joblib.dump(model, MODEL_PATH)
+    print("[Train] Model trained and saved.")
+
+def run_forecast():
+    model = joblib.load(MODEL_PATH)
+    last_value = load_data().iloc[-1]['value']
+    prediction = model.predict([[last_value]])
+    print(f"[Forecast] Predicted value: {prediction[0]}")
+    # Add alert logic or DB insert here
+    return float(prediction[0])
+
+# === AIRFLOW DAG ===
+default_args = {
+    'owner': 'airflow',
+    'start_date': datetime(2024, 1, 1),
+    'retries': 1,
+}
+
+with DAG(
+    dag_id='autosys_ai_batch_replacement',
+    default_args=default_args,
+    schedule_interval='0 6 * * *',  # 6AM daily
+    catchup=False,
+    description='Replace AutoSys batch with Airflow + AI model',
+) as dag:
+
+    task_train = PythonOperator(
+        task_id='train_model',
+        python_callable=train_model,
+    )
+
+    task_forecast = PythonOperator(
+        task_id='run_forecast',
+        python_callable=run_forecast,
+    )
+
+    task_train >> task_forecast
